@@ -1,0 +1,36 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="hh-player">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+
+  <script>
+    /**
+     * `hh-player`
+     * 
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class HhPlayer extends Polymer.Element {
+      static get is() { return 'hh-player'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'hh-player'
+          }
+        };
+      }
+    }
+
+    window.customElements.define(HhPlayer.is, HhPlayer);
+  </script>
+</dom-module>
