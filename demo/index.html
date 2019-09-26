@@ -22,7 +22,11 @@
       <h3>Basic hh-player demo</h3>
       <demo-snippet>
         <template>
-          <hh-player></hh-player>
+          <hh-player id="demo"></hh-player>
+          <script>
+            demo.frameRate = 6;
+            demo.selected = 1;
+          </script>
         </template>
       </demo-snippet>
     </div>

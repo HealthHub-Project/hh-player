@@ -1,36 +1,124 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../iron-icons/av-icons.html">
+<link rel="import" href="../paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../paper-dropdown-menu/paper-dropdown-menu-light.html">
+<link rel="import" href="../neon-animation/web-animations.html">
+<link rel="import" href="../paper-item/paper-item.html">
+<link rel="import" href="../paper-listbox/paper-listbox.html">
+<link rel="import" href="../paper-slider/paper-slider.html">
 
 <dom-module id="hh-player">
-  <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <h2>Hello [[prop1]]!</h2>
-  </template>
+    <template>
+        <style>
+            :host {
+                display: block;
+                width: 400px;
+            }
 
-  <script>
-    /**
-     * `hh-player`
-     * 
-     *
-     * @customElement
-     * @polymer
-     * @demo demo/index.html
-     */
-    class HhPlayer extends Polymer.Element {
-      static get is() { return 'hh-player'; }
-      static get properties() {
-        return {
-          prop1: {
-            type: String,
-            value: 'hh-player'
-          }
-        };
-      }
-    }
+            .container {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                width: 100%;
+                justify-content: space-around;
+                background-color: rgba(0, 0, 0, 0.1);
+                border-radius: 10px;
+            }
 
-    window.customElements.define(HhPlayer.is, HhPlayer);
-  </script>
+            paper-slider {
+                width: 120px;
+            }
+
+            paper-dropdown-menu-light, paper-listbox {
+                width: 120px;
+            }
+
+            .fps-container {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .fps-caption {
+                padding-left: 16px;
+                font-size: 12px;
+                margin-top: 12px;
+            }
+        </style>
+        <div class="container">
+            <paper-icon-button icon="av:fast-rewind" noink></paper-icon-button>
+
+            <template is="dom-if" if="{{playing}}">
+                <paper-icon-button on-click="playingToggle" icon="av:play-arrow" noink></paper-icon-button>
+            </template>
+            <template is="dom-if" if="{{!playing}}">
+                <paper-icon-button on-click="playingToggle" icon="av:pause" noink></paper-icon-button>
+            </template>
+            <paper-icon-button icon="av:fast-forward" noink></paper-icon-button>
+
+            <paper-dropdown-menu-light class="custom" label="Frame Time Type" >
+                <paper-listbox slot="dropdown-content" class="dropdown-content" selected="{{selected}}">
+                    <paper-item>Default</paper-item>
+                    <paper-item>Vector</paper-item>
+                </paper-listbox>
+            </paper-dropdown-menu-light>
+
+            <div class="fps-container">
+                <div class="fps-caption">Frame Rate : <span id="fpsLabel"></span></div>
+                <paper-slider id="fpsRatings" min="0" max="30" value="{{frameRate}}" pin></paper-slider>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        /**
+         * `hh-player`
+         *
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class HhPlayer extends Polymer.Element {
+            static get is() {
+                return 'hh-player';
+            }
+
+            ready() {
+                super.ready();
+
+                this.$.fpsLabel.textContent = this.$.fpsRatings.value;
+
+                this.$.fpsRatings._valueChanged = (value) => {
+                    this.$.fpsLabel.textContent = value;
+                }
+            }
+
+            static get properties() {
+                return {
+                    frameRate: {
+                        type: Number,
+                        value: 0
+                    },
+
+                    playing: {
+                        type: Boolean,
+                        value: false
+                    },
+
+                    selected: {
+                        type: String,
+                        value: 0
+                    },
+                };
+            }
+
+            playingToggle() {
+                this.playing = !(this.playing);
+
+            }
+        }
+
+        window.customElements.define(HhPlayer.is, HhPlayer);
+    </script>
 </dom-module>
